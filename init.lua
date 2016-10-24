@@ -392,6 +392,8 @@ minetest.register_globalstep(function(dtime)
 					local privs = minetest.get_player_privs(name)
 					privs.fly = true
 					minetest.set_player_privs(name, privs)
+					minetest.log('action',
+						'Flight School: Granted fly privileges to '..name..'.')
 					minetest.chat_send_player(name, 'You have been granted fly.')
 				end
 
