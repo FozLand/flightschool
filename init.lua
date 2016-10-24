@@ -196,7 +196,7 @@ local function user_form(name)
 		'color,span=1;'..
 		'text,align=left,padding=1]'
 	fs = fs..'table[0,0.7;11.8,5.9;stats;'..
-		'Stat:,Required,#ffffff,Value,'
+		'Stat:,Need,#ffffff,Have,'
 	for _,req in ipairs(requirements) do
 		local is_met = stat_check(req, name)
 
