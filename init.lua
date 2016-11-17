@@ -353,6 +353,8 @@ minetest.register_chatcommand('takeoff', {
 				table.insert(airborn,{player = player, fpos = aircraft.fpos})
 				minetest.sound_play('teleport', {to_player=name, gain = 0.1})
 				player:setpos(aircraft.fpos)
+				minetest.log('action',
+					'Flight School: '..name..' joined flight school.')
 				minetest.chat_send_player(name, 'You are now in flight school.')
 			else
 				minetest.chat_send_player(name, 'You\'re not ready to learn how to '..
@@ -378,13 +380,22 @@ minetest.register_globalstep(function(dtime)
 			if not name or not ppos or not fpos then
 				-- Invalid aircraft or the player left the game.
 				table.remove(airborn,index)
-				minetest.chat_send_player(name, 'You are no longer in flight school.')
+				minetest.log('action',
+					'Flight School: Removed '..(name or '')..' from flight school.')
+				if name then
+					minetest.chat_send_player(name, 'You are no longer in flight school.')
+				end
 			else
 
 				local distance = vector.distance(ppos, fpos)
 				if distance > 100 then
 					-- Player teleported out of aircraft.
 					table.remove(airborn,index)
+					minetest.log('action',
+						'Flight School: '..name..' left flight school.'..
+						' fpos='..minetest.pos_to_string(fpos)..
+						' ppos='..minetest.pos_to_string(ppos)..
+						' distance='..math.floor(distance)..'.')
 					minetest.chat_send_player(name, 'You are no longer in flight school.')
 				elseif distance > 10 and ppos.y < fpos.y then
 					-- Player jumped out of aircraft.
